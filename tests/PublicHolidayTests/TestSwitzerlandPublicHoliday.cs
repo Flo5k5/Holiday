@@ -378,5 +378,26 @@ namespace PublicHolidayTests
             Assert.AreEqual(new DateTime(year, month, day), result, "Geneva PrayDay is the Thursday after the first Sunday in September");
             Assert.AreEqual(DayOfWeek.Thursday, result.DayOfWeek);
         }
+
+        [TestMethod]
+        public void TestNeuchatelRepublicDayNameIsNotNationalDay()
+        {
+            var holidayCalendar = new SwitzerlandPublicHoliday { Canton = SwitzerlandPublicHoliday.Cantons.NE };
+            IList<Holiday> hols = holidayCalendar.PublicHolidaysInformation(2026);
+
+            Holiday republicDay = null;
+            foreach (var h in hols)
+            {
+                if (h.HolidayDate == new DateTime(2026, 3, 1))
+                {
+                    republicDay = h;
+                    break;
+                }
+            }
+
+            Assert.IsNotNull(republicDay, "Neuchâtel observes Republic Day on 1 March");
+            Assert.AreEqual("Republic Day", republicDay.EnglishName);
+            Assert.AreEqual("Instauration de la République", republicDay.Name);
+        }
     }
 }
